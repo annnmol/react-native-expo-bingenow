@@ -7,59 +7,22 @@ import AppText from "../../appComponents/components/AppText";
 import { useFirebaseDBService } from "../../services/firebase";
 import { colors } from "../../themes";
 import { authUserStore } from "../../store/slices/AuthUserSlice";
-import { useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
+import {
+  replaceSavedItem,
+  useSavedItemsStore,
+} from "../../store/slices/SavedItemsSlice";
 
 const FavoritesScreen = () => {
   const { authUser } = useAppSelector(authUserStore);
+  const dispatch = useAppDispatch();
 
-  const { getFirebase, postFirebase, deleteFirebase, updateFirebase } =
-    useFirebaseDBService();
-  const [savedItems, setSavedItems] = React.useState<any[]>([]);
+  const { getFirebase } = useFirebaseDBService();
+  const { savedItems } = useAppSelector(useSavedItemsStore);
   const getSavedItems = () => {
-    getFirebase(`savedJobs`)
+    getFirebase(`savedMovies`)
       .then((res) => {
-        console.log("get res", res);
-        setSavedItems(res);
-      })
-      .catch((err) => {
-        console.warn("err", err);
-      });
-  };
-
-  const addSavedItems = () => {
-    let data = {
-      title: "Singh Anmol",
-      created_on: new Date(Date.now()),
-    };
-    postFirebase("savedJobs", data)
-      .then((res) => {
-        console.log("res post", res);
-        getSavedItems();
-      })
-      .catch((err) => {
-        console.warn("err", err);
-      });
-  };
-  const deleteSavedItem = (id: string) => {
-    deleteFirebase("savedJobs", id)
-      .then((res) => {
-        console.log("res delte", res);
-        getSavedItems();
-      })
-      .catch((err) => {
-        console.warn("err", err);
-      });
-  };
-
-  const updateSavedItem = (item: any) => {
-    let data = {
-      title: "udpate hogya",
-      created_on: new Date(Date.now()),
-    };
-    updateFirebase("savedJobs", item?.id, data)
-      .then((res) => {
-        console.log("res delte", res);
-        getSavedItems();
+        dispatch(replaceSavedItem(res));
       })
       .catch((err) => {
         console.warn("err", err);
@@ -67,38 +30,27 @@ const FavoritesScreen = () => {
   };
 
   useEffect(() => {
-    // getSavedItems();
+    getSavedItems();
   }, []);
 
   return (
     <AppSafeViewScreen>
       <AppText>Favorites</AppText>
 
-      {/* <AppButton onPress={() => addSavedItems()}>Add Item</AppButton>
       {savedItems?.map((item, index) => {
+        // console.log("item", item)
         return (
           <View key={index}>
-            <AppText>
-              {" "}
-              {item?.title} {item.id}, uid:{" "}
-              {item?.uid === authUser?.uid ? "true" : "false"}
-            </AppText>
-            <AppButton onPress={() => deleteSavedItem(item.id)}>
-              Delete item
-            </AppButton>
-
-            <AppButton onPress={() => updateSavedItem(item)}>
-              update item
-            </AppButton>
+            <AppText>{item?.title}</AppText>
           </View>
         );
-      })} */}
+      })}
 
       <CategoriesSection />
       {/* <OffersSection/>
       <CategoriesListingSection/>
       <SearchSection/> */}
-      <View
+      {/* <View
         style={{ height: 100, width: 200, backgroundColor: colors.bgColor50 }}
       />
       <View
@@ -118,7 +70,7 @@ const FavoritesScreen = () => {
       />
       <View
         style={{ height: 100, width: 200, backgroundColor: colors.bgColor }}
-      />
+      /> */}
     </AppSafeViewScreen>
   );
 };

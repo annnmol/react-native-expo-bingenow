@@ -8,6 +8,7 @@ import SearchScreen from '../screens/Search/SearchScreen';
 import UserAccountScreen from '../screens/UserAccount/UserAccountScreen';
 import { ROUTES_NAMES } from "./Routes";
 import { colors } from '../themes';
+import HomeTabNavigator from './HomeTabNavigator';
 
 
 const Tab = createBottomTabNavigator();
@@ -43,7 +44,7 @@ const TabsNavigator = () => {
           tabBarLabel:'Home'
         }}
       /> */}
-      <Tab.Screen name={ROUTES_NAMES.HOMESCREEN} component={HomeScreen}   options={{
+      <Tab.Screen name={ROUTES_NAMES.HOMESCREEN_NAVIGATOR} component={HomeTabNavigator}   options={{
           tabBarIcon: ({ focused, size, color, }) => <AppExpoIcons name={focused ? 'home' : "home-outline"} size={20} color={color} />,
           tabBarLabel:'Home'
         }}/>

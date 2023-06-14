@@ -19,4 +19,13 @@ export const AppStyles = StyleSheet.create({
     borderRadius: 50,
     overflow: "hidden",
   },
+
+  backgroundGradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
+    zIndex: 1,
+  },
 });

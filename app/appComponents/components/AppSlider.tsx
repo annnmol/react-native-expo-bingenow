@@ -15,6 +15,7 @@ import AppExpoIcons from "../icons/AppExpoIcons";
 import AppIconButton from "../icons/AppIconButton";
 import AppButton from "./AppButton";
 import AppText from "./AppText";
+import { movieImageUrl500, movieImageUrlOriginal } from "../../services/ApiService";
 
 interface Props {
   data: any[];
@@ -34,7 +35,6 @@ const AppSlider: React.FC<Props> = ({
 }) => {
   const flatlistRef = React.useRef<any>(null);
   const [currentIndex, setCurrentIndex] = React.useState<number>(0);
-
   const goToNextSlide = () => {
     flatlistRef.current.scrollToIndex({
       index: currentIndex + 1 >= data.length ? 0 : currentIndex + 1,
@@ -51,7 +51,6 @@ const AppSlider: React.FC<Props> = ({
         onScroll={(e) => {
           const x = e.nativeEvent.contentOffset.x;
           let foundIndex = Math.round(x / constants.windowWidth);
-          console.log("xxxxx", x, foundIndex, typeof foundIndex);
           setCurrentIndex(foundIndex);
         }}
         horizontal
@@ -72,7 +71,7 @@ const AppSlider: React.FC<Props> = ({
               />
               <TouchableOpacity disabled={true} style={styles.touchable}>
                 <Image
-                  source={{ uri: item?.image ?? placeholderImage }}
+                  source={{ uri: movieImageUrlOriginal(item?.backdrop_path) ?? placeholderImage }}
                   style={styles.image}
                 />
               </TouchableOpacity>
@@ -81,8 +80,8 @@ const AppSlider: React.FC<Props> = ({
                 <AppText style={styles.title} numberOfLines={1}>
                   {item?.title}
                 </AppText>
-                <AppText style={styles.caption} numberOfLines={1}>
-                  {index + 1 + " " + item?.title + item?.image}
+                <AppText style={styles.caption} numberOfLines={2}>
+                  {item?.overview}
                 </AppText>
                 <View style={styles.buttonWrapper}>
                   <AppButton
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
 
   sliderWrapper: {
     width: constants.windowWidth,
-    height: constants.windowHeight / 3,
+    height: constants.windowHeight / 2.7,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 6,
     position: "absolute",
-    bottom: 8,
+    bottom: 10,
   },
 
   activePaginationDot: {
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
     gap: 12,
     position: "absolute",
     zIndex: 2,
-    bottom: 16,
+    bottom: 24,
     paddingHorizontal: 20,
     paddingVertical: 4,
   },
@@ -219,10 +218,10 @@ const styles = StyleSheet.create({
     color: colors.light100,
   },
   caption: {
-    fontSize: typography.textS,
-    marginTop: -6,
+    fontSize: typography.textES,
+    marginTop: -12,
     fontWeight: "400",
     letterSpacing: 0.5,
-    color: colors.light100,
+    color: colors.light600,
   },
 });

@@ -4,11 +4,13 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import {
   addSavedItem,
   removeSavedItem,
+  replaceSavedItem,
   useSavedItemsStore,
 } from "../../store/slices/SavedItemsSlice";
 import { colors } from "../../themes";
 import AppExpoIcons from "../icons/AppExpoIcons";
 import AppIconButton from "../icons/AppIconButton";
+import { useFirebaseDBService } from "../../services/firebase";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -17,6 +19,8 @@ interface Props {
 
 const AppWishlistButton: React.FC<Props> = ({ style, item }) => {
   const dispatch = useAppDispatch();
+
+  const { postFirebase, deleteFirebase, getFirebase } = useFirebaseDBService();
   const { savedItems } = useAppSelector(useSavedItemsStore);
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
@@ -27,29 +31,72 @@ const AppWishlistButton: React.FC<Props> = ({ style, item }) => {
     }
   }, [savedItems]);
 
-  const handleClick = () => {
+  const handleClick = (item: any) => {
+    // console.log("item", item)
     if (isActive) {
-      dispatch(removeSavedItem(item?.id));
-      setIsActive(false);
+      console.log("aaaaaaaaaaaaaa", item?.id);
+      deleteSavedItem(item?.id);
     } else {
-      dispatch(addSavedItem(item));
-      setIsActive(true);
+      createSavedItem(item);
     }
+  };
+
+  const getSavedItems = () => {
+    getFirebase(`savedMovies`)
+      .then((res) => {
+        dispatch(replaceSavedItem(res));
+      })
+      .catch((err) => {
+        console.warn("err", err);
+      });
+  };
+
+  const createSavedItem = (item: any) => {
+    let data = {
+      ...item,
+      created_on: new Date(Date.now()),
+    };
+    postFirebase("savedMovies", data)
+      .then((res) => {
+        getSavedItems();
+        setIsActive(true);
+        console.log("res post", res);
+      })
+      .catch((err) => {
+        console.warn("err", err);
+      });
+  };
+
+  const deleteSavedItem = (id: string) => {
+    console.log("iddeeee", id);
+    const reduxFirebaseItem = savedItems?.find((i: any) => i?.id === item?.id);
+    console.log("firebaseId", reduxFirebaseItem);
+    if (!reduxFirebaseItem?.firebaseId) {
+      return;
+    }
+    deleteFirebase("savedMovies", reduxFirebaseItem?.firebaseId)
+      .then((res) => {
+        getSavedItems();
+        setIsActive(false);
+      })
+      .catch((err) => {
+        console.warn("err", err);
+      });
   };
 
   return (
     <AppIconButton
       style={[
         styles.iconBtn,
-        { backgroundColor: isActive ? colors.bgColor500 : "transparent" },
+        // { backgroundColor: isActive ? colors.bgColor500 : "transparent" },
         style && style,
       ]}
-      onPress={() => handleClick()}
+      onPress={() => handleClick(item)}
     >
       <AppExpoIcons
         name={isActive ? "favorite" : "favorite-outline"}
         size={20}
-        color={isActive ? colors.light100 : colors.dark600}
+        color={isActive ? colors.light600 : colors.light600}
       />
     </AppIconButton>
   );
@@ -64,7 +111,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 8,
-    backgroundColor: colors.light100,
+    // backgroundColor: colors.light100,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",

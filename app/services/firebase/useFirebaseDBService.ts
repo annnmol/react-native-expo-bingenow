@@ -86,7 +86,7 @@ const useFirebaseDBService = () => {
   const deleteFirebase = async (endpoint: string, docId: string) => {
     let collectionRef = collection(firebaseDb, endpoint);
     const documentRef = doc(collectionRef, docId);
-
+    
     return await deleteDoc(documentRef)
       .then((res) => {
         return Promise.resolve(res);

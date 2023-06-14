@@ -34,6 +34,7 @@ export class ROUTES_NAMES {
   public static ORDERS = "Orders";
   public static FAVORITES = "Favorites";
   public static HELP = "help";
+  public static DETAILS = "details";
 
   public static DRAWER_NAVIGATOR = "DrawerNavigator";
   public static SETTINGS = "Settings";  

@@ -64,7 +64,7 @@ export const StyledForms = StyleSheet.create({
 
   endIcon: {
     position: "absolute",
-    top: 35,
+    top: 33,
     right: 8,
     zIndex: 1,
     borderRightWidth: 1,
@@ -75,7 +75,7 @@ export const StyledForms = StyleSheet.create({
 
   leftIcon: {
     position: "absolute",
-    top: 35,
+    top: 33,
     left: 8,
     zIndex: 1,
     borderRightWidth: 1,

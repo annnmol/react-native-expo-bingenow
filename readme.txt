@@ -4,6 +4,10 @@ find . -name "*.git*" -print0 | xargs -0 rm -rf;
 rm -fr .git
 git status
 
+//react-tools
+yarn add --dev react-devtools
+yarn run react-devtools
+
 yarn add react-hook-form
 yarn add @hookform/resolvers
 yarn add yup
@@ -35,15 +39,13 @@ yarn add react-native-gesture-handler react-native-reanimated
 //redux
 yarn add @reduxjs/toolkit react-redux
 
-
 yarn add expo install expo-linear-gradient
 
 yarn add expo install @react-native-community/netinfo
 yarn add expo install expo-font
+yarn add expo install react-native-svg
 
 yarn add axios
-
-yarn add expo install react-native-svg
 yarn add -D react-native-dotenv
 
 

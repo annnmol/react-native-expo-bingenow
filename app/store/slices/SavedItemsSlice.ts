@@ -7,18 +7,6 @@ interface Props {
 
 let INITIAL_STATE: Props = {
   savedItems: [
-    {
-      id: 1,
-      name: "Burger",
-      value: "burger",
-      image: require("../../assets/icons/burger.png"),
-    },
-    {
-      id: 2,
-      name: "Veggies",
-      value: "veggies",
-      image: require("../../assets/icons/veggie.png"),
-    },
   ],
 };
 
@@ -31,6 +19,9 @@ const SavedItemsSlice = createSlice({
       const newData = [...existingData, payload];
       state.savedItems = newData;
     },
+    replaceSavedItem(state, { payload }: PayloadAction<any>) {
+      state.savedItems = payload;
+    },
     removeSavedItem(state, { payload }: PayloadAction<any>) {
       const existingData = JSON.parse(JSON.stringify(state.savedItems));
       const newData = existingData.filter((item:any) => item?.id !== payload);
@@ -41,6 +32,6 @@ const SavedItemsSlice = createSlice({
 
 export default SavedItemsSlice.reducer;
 
-export const { addSavedItem, removeSavedItem } = SavedItemsSlice.actions;
+export const { addSavedItem, removeSavedItem, replaceSavedItem } = SavedItemsSlice.actions;
 
 export const useSavedItemsStore = (state: RootState) => state.currentSavedItems;

@@ -9,7 +9,7 @@ export const convertSnapShotToDataArray = (
 ) => {
   const documents = snapshot.docs.map(
     (doc: QueryDocumentSnapshot<DocumentData>) => ({
-      id: doc.id,
+      firebaseId: doc.id,
       ...doc.data(),
     })
   );

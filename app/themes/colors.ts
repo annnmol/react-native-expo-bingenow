@@ -1,4 +1,4 @@
-const COLOR_SCHEME_NUMBER = 6;
+const COLOR_SCHEME_NUMBER = 3;
 
 const getContrastTextColorRgb = (rbg: string) => {
   const [r, g, b, a] = rbg.match(/\d+/g).map(Number);
