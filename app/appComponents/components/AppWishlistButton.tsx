@@ -32,9 +32,7 @@ const AppWishlistButton: React.FC<Props> = ({ style, item }) => {
   }, [savedItems]);
 
   const handleClick = (item: any) => {
-    // console.log("item", item)
     if (isActive) {
-      console.log("aaaaaaaaaaaaaa", item?.id);
       deleteSavedItem(item?.id);
     } else {
       createSavedItem(item);
@@ -56,6 +54,7 @@ const AppWishlistButton: React.FC<Props> = ({ style, item }) => {
       ...item,
       created_on: new Date(Date.now()),
     };
+
     postFirebase("savedMovies", data)
       .then((res) => {
         getSavedItems();
@@ -68,10 +67,11 @@ const AppWishlistButton: React.FC<Props> = ({ style, item }) => {
   };
 
   const deleteSavedItem = (id: string) => {
-    console.log("iddeeee", id);
     const reduxFirebaseItem = savedItems?.find((i: any) => i?.id === item?.id);
-    console.log("firebaseId", reduxFirebaseItem);
     if (!reduxFirebaseItem?.firebaseId) {
+      dispatch(removeSavedItem(id));
+      setIsActive(false);
+
       return;
     }
     deleteFirebase("savedMovies", reduxFirebaseItem?.firebaseId)

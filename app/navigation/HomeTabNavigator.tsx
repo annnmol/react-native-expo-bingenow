@@ -4,6 +4,7 @@ import HomeScreen from "../screens/Home/HomeScreen";
 import { ROUTES_NAMES } from "./Routes";
 import SearchScreen from "../screens/Search/SearchScreen";
 import DetailsScreen from "../screens/Details/[id]";
+import ViewAllListings from "../screens/ViewAllListings/ViewAllListings";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const HomeTabNavigator = () => {
     <Stack.Screen name={ROUTES_NAMES.HOMESCREEN} component={HomeScreen} />
     <Stack.Screen name={ROUTES_NAMES.DETAILS} component={DetailsScreen} options={{presentation:'card',}}/>
     <Stack.Screen name={ROUTES_NAMES.SEARCH} component={SearchScreen} options={{presentation:'modal', headerShown:false}}/>
+    <Stack.Screen name={ROUTES_NAMES.VIEW_ALL_LISTINGS} component={ViewAllListings} options={{presentation:'modal', headerShown:false}}/>
   </Stack.Navigator>
   )
 }

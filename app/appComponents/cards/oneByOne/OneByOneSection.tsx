@@ -2,21 +2,23 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ROUTES_NAMES } from "../../../navigation/Routes";
-import { movieImageUrl500 } from "../../../services/ApiService";
+import {
+  movieImageUrlOriginal
+} from "../../../services/ApiService";
 import { colors, constants, typography } from "../../../themes";
 import { placeholderImage } from "../../../utils";
 import AppText from "../../components/AppText";
 import AppWishlistButton from "../../components/AppWishlistButton";
 import AppExpoIcons from "../../icons/AppExpoIcons";
 import AppIconButton from "../../icons/AppIconButton";
-import TwoByFourCard from "./TwoByFourCard";
+import OneByOneCard from "./OneByOneCard";
 
 interface Props {
   data: any[];
   title?: string;
 }
 
-const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
+const OneByOneSection: React.FC<Props> = ({ data, title = "Trending" }) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
@@ -49,9 +51,11 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
         snapToAlignment={"center"}
         renderItem={({ item, index }) => {
           return (
-            <TwoByFourCard
+            <OneByOneCard
               image={{
-                uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
+                uri:
+                  movieImageUrlOriginal(item?.backdrop_path) ??
+                  placeholderImage,
               }}
               onPress={() => handleCardClick(item?.id)}
               style={[
@@ -105,7 +109,7 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
   );
 };
 
-export default TwoByFourSection;
+export default OneByOneSection;
 
 const styles = StyleSheet.create({
   container: {

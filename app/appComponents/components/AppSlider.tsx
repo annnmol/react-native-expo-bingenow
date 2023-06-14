@@ -15,7 +15,11 @@ import AppExpoIcons from "../icons/AppExpoIcons";
 import AppIconButton from "../icons/AppIconButton";
 import AppButton from "./AppButton";
 import AppText from "./AppText";
-import { movieImageUrl500, movieImageUrlOriginal } from "../../services/ApiService";
+import {
+  movieImageUrl500,
+  movieImageUrlOriginal,
+} from "../../services/ApiService";
+import AppWishlistButton from "./AppWishlistButton";
 
 interface Props {
   data: any[];
@@ -71,7 +75,11 @@ const AppSlider: React.FC<Props> = ({
               />
               <TouchableOpacity disabled={true} style={styles.touchable}>
                 <Image
-                  source={{ uri: movieImageUrlOriginal(item?.backdrop_path) ?? placeholderImage }}
+                  source={{
+                    uri:
+                      movieImageUrlOriginal(item?.backdrop_path) ??
+                      placeholderImage,
+                  }}
                   style={styles.image}
                 />
               </TouchableOpacity>
@@ -93,7 +101,11 @@ const AppSlider: React.FC<Props> = ({
                   >
                     {ctaBtnText}
                   </AppButton>
-                  <AppIconButton
+                  <AppWishlistButton
+                    item={item}
+                    style={{ width: 28, height: 28 }}
+                  />
+                  {/* <AppIconButton
                     onPress={() => {
                       onPressSecondayBtn(item);
                     }}
@@ -103,7 +115,7 @@ const AppSlider: React.FC<Props> = ({
                       size={16}
                       color={colors.light100}
                     />
-                  </AppIconButton>
+                  </AppIconButton> */}
                 </View>
               </View>
             </View>
@@ -132,7 +144,7 @@ export default AppSlider;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: -16,
+    // marginHorizontal: -16,
     alignItems: "center",
     position: "relative",
   },
@@ -198,7 +210,7 @@ const styles = StyleSheet.create({
 
   buttonWrapper: {
     flexDirection: "row",
-    gap: 20,
+    gap: 10,
     height: 28,
     justifyContent: "flex-start",
     alignItems: "center",

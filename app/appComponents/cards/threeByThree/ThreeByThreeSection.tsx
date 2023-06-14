@@ -9,14 +9,14 @@ import AppText from "../../components/AppText";
 import AppWishlistButton from "../../components/AppWishlistButton";
 import AppExpoIcons from "../../icons/AppExpoIcons";
 import AppIconButton from "../../icons/AppIconButton";
-import TwoByFourCard from "./TwoByFourCard";
+import ThreeByThreeCard from "./ThreeByThreeCard";
 
 interface Props {
   data: any[];
   title?: string;
 }
 
-const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
+const ThreeByThreeSection: React.FC<Props> = ({ data, title = "Trending" }) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
@@ -24,7 +24,6 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
       id: title,
     });
   };
-
   const handleCardClick = (id: string) => {
     navigation.navigate(ROUTES_NAMES.DETAILS, {
       id: id,
@@ -47,18 +46,20 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
         data={data}
         snapToStart={true}
         snapToAlignment={"center"}
+        numColumns={3}
+        columnWrapperStyle={{justifyContent: 'space-between', paddingHorizontal:16}}
         renderItem={({ item, index }) => {
           return (
-            <TwoByFourCard
+            <ThreeByThreeCard
               image={{
                 uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
               }}
               onPress={() => handleCardClick(item?.id)}
               style={[
-                index === 0 && { marginLeft: constants.paddingHorizontalApp },
-                index === data?.length - 1 && {
-                  marginRight: constants.paddingHorizontalApp,
-                },
+                // index === 0 && { marginLeft: constants.paddingHorizontalApp },
+                // index === data?.length - 1 && {
+                //   marginRight: constants.paddingHorizontalApp,
+                // },
               ]}
               renderSaveIcon={
                 <AppWishlistButton
@@ -95,17 +96,17 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
         }}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => (
-          <View style={{ backgroundColor: "transparent", width: 16 }} />
+          <View style={{ backgroundColor: "transparent", height: 16 }} />
         )}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        horizontal
+        // horizontal
       />
     </View>
   );
 };
 
-export default TwoByFourSection;
+export default ThreeByThreeSection;
 
 const styles = StyleSheet.create({
   container: {

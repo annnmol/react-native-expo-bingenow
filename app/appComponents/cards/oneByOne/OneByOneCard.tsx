@@ -22,7 +22,7 @@ interface Props {
   renderPremiumIcon: ReactNode;
 }
 
-const TwoByFourCard: React.FC<Props> = ({
+const OneByOneCard: React.FC<Props> = ({
   image,
   onPress,
   isActive = false,
@@ -45,14 +45,14 @@ const TwoByFourCard: React.FC<Props> = ({
   );
 };
 
-export default TwoByFourCard;
+export default OneByOneCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: constants.windowWidth / 2.6,
-    height: constants.windowHeight / 4.4,
+    width: constants.windowWidth - 32,
+    // height: constants.windowHeight / 4.4,
     // width: constants.windowWidth / 3.6,
-    // height: constants.windowHeight / 5.6,
+    height: constants.windowHeight / 6,
     borderRadius: 16,
     backgroundColor: colors.light600,
     alignItems: "center",

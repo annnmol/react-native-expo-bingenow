@@ -9,14 +9,14 @@ import AppText from "../../components/AppText";
 import AppWishlistButton from "../../components/AppWishlistButton";
 import AppExpoIcons from "../../icons/AppExpoIcons";
 import AppIconButton from "../../icons/AppIconButton";
-import TwoByFourCard from "./TwoByFourCard";
+import ThreeByFiveCard from "./ThreeByFiveCard";
 
 interface Props {
   data: any[];
   title?: string;
 }
 
-const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
+const ThreeByFiveSection: React.FC<Props> = ({ data, title = "Trending" }) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
@@ -24,7 +24,6 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
       id: title,
     });
   };
-
   const handleCardClick = (id: string) => {
     navigation.navigate(ROUTES_NAMES.DETAILS, {
       id: id,
@@ -49,7 +48,7 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
         snapToAlignment={"center"}
         renderItem={({ item, index }) => {
           return (
-            <TwoByFourCard
+            <ThreeByFiveCard
               image={{
                 uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
               }}
@@ -105,7 +104,7 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
   );
 };
 
-export default TwoByFourSection;
+export default ThreeByFiveSection;
 
 const styles = StyleSheet.create({
   container: {
