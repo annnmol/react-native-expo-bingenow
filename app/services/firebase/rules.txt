@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow create: if request.auth != null && request.auth.uid == request.resource.uid;
+      allow update, delete: if request.auth != null && request.auth.uid == request.resource.uid;
+      allow read: if true;
+    }
+
+    
+  }
+}
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.uid;
+      allow update, delete: if request.auth != null && request.auth.uid == request.resource.uid;
+      allow read: if request.auth != null;
+    }
+    
+    match /{savedJobs} {
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.uid;
+      allow update, delete: if request.auth != null && request.auth.uid == request.resource.data.uid;
+      allow read: if request.auth != null;
+    }
+    
+    match /{collection}/{document} {
+      function isAuthenticated() {
+        return request.auth != null;
+      }
+
+      function isOwner() {
+        return resource.data.createdBy == request.auth.uid;
+      }
+
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && isOwner();
+    }
+  }
+}
