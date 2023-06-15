@@ -37,12 +37,8 @@ const ThreeByThreeCard: React.FC<Props> = ({
         <LinearGradient
           colors={["rgba(0,0,0,0.4)", "transparent", "rgba(0,0,0,0.1)"]}
           style={AppStyles.backgroundGradient}
-        /> <AppFastImage
-        source={
-          image
-        }
-        style={styles.icon}
-      />
+        />
+        <Image source={image} style={styles.icon} />
       </View>
       {renderSaveIcon}
       {renderPremiumIcon}
@@ -54,8 +50,6 @@ export default ThreeByThreeCard;
 
 const styles = StyleSheet.create({
   container: {
-    // width: constants.windowWidth / 2.6,
-    // height: constants.windowHeight / 4.4,
     width: constants.windowWidth / 3.6,
     height: constants.windowHeight / 6,
     borderRadius: 16,
@@ -64,7 +58,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     overflow: "hidden",
     position: "relative",
-    // marginHorizontal: 8,
   },
   active: {
     backgroundColor: colors.bgColor300,

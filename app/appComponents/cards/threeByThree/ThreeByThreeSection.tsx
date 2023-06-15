@@ -40,6 +40,7 @@ const ThreeByThreeSection: React.FC<Props> = ({
     });
   };
 
+  // return null;
   return (
     <View style={[styles.container]}>
       {data?.length > 0 ? (

@@ -17,9 +17,11 @@ interface Props {
   data: any[];
   title?: string;
   searchSlug?: string;
+  isLoading?: boolean;
+
 }
 
-const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending", searchSlug }) => {
+const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending", searchSlug, isLoading=false }) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
@@ -49,7 +51,7 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending", searchSlu
           />
         </AppIconButton>
       </View>
-      {data?.length > 0 ? (
+      {!isLoading ? (
         <FlatList
           data={data}
           ListEmptyComponent={<AppNoData/>}

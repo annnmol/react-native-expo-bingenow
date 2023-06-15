@@ -17,12 +17,14 @@ interface Props {
   data: any[];
   title?: string;
   searchSlug?: string;
+  isLoading?: boolean;
 }
 
 const RectChipsSection: React.FC<Props> = ({
   data,
   title = "Trending",
   searchSlug,
+  isLoading = false,
 }) => {
   const navigation = useNavigation<any>();
 
@@ -59,7 +61,7 @@ const RectChipsSection: React.FC<Props> = ({
           ) : null
         }
       </View>
-      {data?.length > 0 ? (
+      {!isLoading ? (
         <FlatList
           data={data}
           initialNumToRender={10}

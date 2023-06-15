@@ -10,10 +10,11 @@ import AppNoData from "../../components/AppNoData";
 
 interface Props {
   data: any[];
+  isLoading?: boolean;
   showPagination?: boolean;
 }
 
-const AppSlider: React.FC<Props> = ({ data, showPagination = true }) => {
+const AppSlider: React.FC<Props> = ({ data, showPagination = true, isLoading=false }) => {
   const navigation = useNavigation<any>();
 
   const flatlistRef = React.useRef<any>(null);
@@ -36,7 +37,7 @@ const AppSlider: React.FC<Props> = ({ data, showPagination = true }) => {
 
   return (
     <View style={[styles.container]}>
-      {data?.length > 0 ? (
+      {!isLoading ? (
         <FlatList
           data={data}
           ListEmptyComponent={<AppNoData/>}

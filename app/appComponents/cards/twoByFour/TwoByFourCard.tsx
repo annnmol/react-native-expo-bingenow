@@ -39,7 +39,7 @@ const TwoByFourCard: React.FC<Props> = ({
           colors={["rgba(0,0,0,0.4)", "transparent", "rgba(0,0,0,0.1)"]}
           style={AppStyles.backgroundGradient}
         />
-        <AppFastImage
+        <Image
           source={
             image
           }

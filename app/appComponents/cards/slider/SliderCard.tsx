@@ -4,7 +4,7 @@ import { colors, constants, typography } from "../../../themes";
 import { LinearGradient } from "expo-linear-gradient";
 import AppFastImage from "../../components/AppFastImage";
 import { placeholderImage } from "../../../utils";
-import { movieImageUrlOriginal } from "../../../services/ApiService";
+import { movieImageUrl500, movieImageUrlOriginal } from "../../../services/ApiService";
 import AppText from "../../components/AppText";
 import AppButton from "../../components/AppButton";
 import AppWishlistButton from "../../components/AppWishlistButton";
@@ -30,7 +30,7 @@ const SliderCard: React.FC<Props> = ({ item, onPress, ctaBtnText = "Watch Now", 
       <TouchableOpacity disabled={true} style={styles.touchable}>
         <AppFastImage
           source={
-            movieImageUrlOriginal(item?.backdrop_path) ?? placeholderImage
+            movieImageUrl500(item?.backdrop_path) ?? placeholderImage
           }
           style={styles.image}
         />

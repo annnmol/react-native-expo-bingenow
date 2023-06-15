@@ -16,9 +16,10 @@ import AppNoData from "../../components/AppNoData";
 interface Props {
   data: any[];
   title?: string;
+  isLoading?: boolean;
 }
 
-const OneByOneSection: React.FC<Props> = ({ data, title = "Trending" }) => {
+const OneByOneSection: React.FC<Props> = ({ data, title = "Trending",isLoading=false }) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
@@ -49,7 +50,7 @@ const OneByOneSection: React.FC<Props> = ({ data, title = "Trending" }) => {
           </AppIconButton>
         ) : null}
       </View>
-      {data?.length > 0 ? (
+      {!isLoading ? (
         <FlatList
           data={data}
           ListEmptyComponent={<AppNoData/>}

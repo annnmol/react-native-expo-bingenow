@@ -30,12 +30,11 @@ const RectChipsCard: React.FC<Props> = ({
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <View style={[styles.container,style]}>
-      <AppFastImage
+      <Image
           source={
             image
           }
           style={styles.icon}
-          contentFit="fill"
         />
           {/* <AppText style={styles.title}>{title}</AppText> */}
       </View>
@@ -47,15 +46,25 @@ export default RectChipsCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: constants.windowWidth / 5,
+    // width: constants.windowWidth / 5,
+    // height: 48,
+    // borderRadius: 12,
+    // backgroundColor: colors.bgColor50,
+    // alignItems: "center",
+    // justifyContent: "center",
+    // overflow: "hidden",
+    // position: "relative",
+    
+
+    width: 48,
     height: 48,
-    borderRadius: 12,
+    borderRadius: 16,
     backgroundColor: colors.bgColor50,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    position: "relative",
-    
+    paddingHorizontal: 10,
+    paddingVertical: 12,
   
   },
   active: {
@@ -65,6 +74,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: "stretch",
+    borderRadius: 4,
   },
   title:{
     textAlign:"center",

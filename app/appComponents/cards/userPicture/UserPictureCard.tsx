@@ -33,7 +33,7 @@ const UserPictureCard: React.FC<Props> = ({
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <View style={[styles.container, style]}>
-        <AppFastImage source={image} style={styles.icon} contentFit="cover" />
+        <Image source={image} style={styles.icon}/>
         <AppText style={styles.tagLine} numberOfLines={2}>
           {title}
         </AppText>

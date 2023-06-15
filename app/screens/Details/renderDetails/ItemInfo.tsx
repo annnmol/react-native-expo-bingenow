@@ -48,6 +48,7 @@ const ItemInfo: React.FC<Props> = ({
         </View>
       </View>
       <View style={styles.infoBox}>
+        
         <AppText style={styles.captionText} numberOfLines={2}>
           {caption1}
         </AppText>

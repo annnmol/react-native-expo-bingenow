@@ -96,7 +96,7 @@ const DetailsScreen = ({ route }) => {
       getWatchProviders();
     }
   }, [id, mediaType]);
-
+  // console.log("id && mediaType", id, mediaType, data?.networks);
   if (!id) {
     navigation.back();
   }
@@ -106,15 +106,27 @@ const DetailsScreen = ({ route }) => {
       {!isDataLoading ? (
         <>
           <ItemInfo
-            title={data?.title}
+            title={data?.title ?? data?.name}
             tagLine={data?.tagline}
             image={{ uri: movieImageUrlOriginal(data?.poster_path) }}
-            caption1={"💠 " + data?.status}
-            caption2={"📅 " + data?.release_date}
-            caption3={"🍿" + data?.runtime + " mins"}
-            caption4={"•" + " " + data?.genres?.[0]?.name}
-            caption5={"•" + " " + data?.genres?.[1]?.name}
-            caption6={"•" + " " + data?.genres?.[2]?.name}
+            caption1={data?.status}
+            caption2={
+              data?.release_date
+                ? "| " + data?.release_date?.slice(0,4)
+                : "| " + data?.first_air_date?.slice(0,4)
+            }
+            caption3={
+              data?.runtime
+                ? "| " + data?.runtime + " mins"
+                : "| " + data?.number_of_seasons + " Season"
+            }
+            caption4={"| "  + data?.genres?.[0]?.name}
+            caption5={"| "  + data?.genres?.[1]?.name}
+            caption6={
+              data?.genres?.[2]?.name
+                ? "| " + data?.genres?.[2]?.name
+                : "| " + data?.type
+            }
           />
           <ItemAbout
             about={data?.overview ?? "No summary available."}
@@ -122,7 +134,7 @@ const DetailsScreen = ({ route }) => {
           />
 
           <RectChipsSection
-            data={watchProviders}
+            data={data?.networks ?? watchProviders}
             title="Available on"
             searchSlug={""}
           />
@@ -154,10 +166,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 12,
+
+    // backgroundColor:'red',
     // justifyContent: "center",
     // alignItems: "center",
     // height:
-    // backgroundColor: colors.dark100,
+    backgroundColor: constants.appBackgroundColor,
     // paddingBottom:10,
   },
 });
