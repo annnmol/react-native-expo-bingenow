@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import CategoriesSection from "../../appComponents/cards/categories/CategoriesSection";
-import AppButton from "../../appComponents/components/AppButton";
+import { StyleSheet, ToastAndroid } from "react-native";
+import ThreeByThreeSection from "../../appComponents/cards/threeByThree/ThreeByThreeSection";
 import AppSafeViewScreen from "../../appComponents/components/AppSafeViewScreen";
-import AppText from "../../appComponents/components/AppText";
 import { useFirebaseDBService } from "../../services/firebase";
-import { colors } from "../../themes";
-import { authUserStore } from "../../store/slices/AuthUserSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { authUserStore } from "../../store/slices/AuthUserSlice";
 import {
   replaceSavedItem,
   useSavedItemsStore,
@@ -16,7 +13,9 @@ import {
 const FavoritesScreen = () => {
   const { authUser } = useAppSelector(authUserStore);
   const dispatch = useAppDispatch();
-
+  const [pageNumber, setPageNumber] = React.useState<number>(1);
+  const [hasMoreData, setHasMoreData] = React.useState<boolean>(true);
+  const [isDataLoading, setIsDataLoading] = React.useState<boolean>(false);
   const { getFirebase } = useFirebaseDBService();
   const { savedItems } = useAppSelector(useSavedItemsStore);
   const getSavedItems = () => {
@@ -33,44 +32,33 @@ const FavoritesScreen = () => {
     getSavedItems();
   }, []);
 
+  const handleFetchMore = () => {
+    if (!hasMoreData) {
+      ToastAndroid.show("No more data to fetch", ToastAndroid.SHORT);
+      return;
+    }
+    if (savedItems?.length >= 180) {
+      setHasMoreData(false);
+      return;
+    }
+  };
+
+  const handleRefresh = () => {
+    // console.log("refresh page");
+    // getMoreData(1);
+    // setPageNumber(1);
+    return;
+  };
+
   return (
     <AppSafeViewScreen>
-      <AppText>Favorites</AppText>
-
-      {savedItems?.map((item, index) => {
-        // console.log("item", item)
-        return (
-          <View key={index}>
-            <AppText>{item?.title}</AppText>
-          </View>
-        );
-      })}
-
-      <CategoriesSection />
-      {/* <OffersSection/>
-      <CategoriesListingSection/>
-      <SearchSection/> */}
-      {/* <View
-        style={{ height: 100, width: 200, backgroundColor: colors.bgColor50 }}
+      <ThreeByThreeSection
+        data={savedItems}
+        title="Favroites"
+        handleFetchMore={handleFetchMore}
+        handleRefresh={handleRefresh}
+        isLoading={isDataLoading}
       />
-      <View
-        style={{ height: 100, width: 200, backgroundColor: colors.bgColor100 }}
-      />
-      <View
-        style={{ height: 100, width: 200, backgroundColor: colors.bgColor300 }}
-      />
-      <View
-        style={{ height: 100, width: 200, backgroundColor: colors.bgColor500 }}
-      />
-      <View
-        style={{ height: 100, width: 200, backgroundColor: colors.bgColor700 }}
-      />
-      <View
-        style={{ height: 100, width: 200, backgroundColor: colors.bgColor900 }}
-      />
-      <View
-        style={{ height: 100, width: 200, backgroundColor: colors.bgColor }}
-      /> */}
     </AppSafeViewScreen>
   );
 };

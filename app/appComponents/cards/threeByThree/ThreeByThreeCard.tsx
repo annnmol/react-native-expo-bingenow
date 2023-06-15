@@ -12,13 +12,14 @@ import {
 } from "react-native";
 import { colors, constants } from "../../../themes";
 import { AppStyles } from "../../../themes/AppStyles";
+import AppFastImage from "../../components/AppFastImage";
 
 interface Props {
   image: ImageSourcePropType;
   isActive?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
   style?: StyleProp<ViewStyle>;
-  renderSaveIcon: ReactNode;
+  renderSaveIcon?: ReactNode;
   renderPremiumIcon: ReactNode;
 }
 
@@ -36,8 +37,12 @@ const ThreeByThreeCard: React.FC<Props> = ({
         <LinearGradient
           colors={["rgba(0,0,0,0.4)", "transparent", "rgba(0,0,0,0.1)"]}
           style={AppStyles.backgroundGradient}
-        />
-        <Image source={image} style={styles.icon} />
+        /> <AppFastImage
+        source={
+          image
+        }
+        style={styles.icon}
+      />
       </View>
       {renderSaveIcon}
       {renderPremiumIcon}

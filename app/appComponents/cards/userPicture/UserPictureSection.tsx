@@ -2,36 +2,39 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ROUTES_NAMES } from "../../../navigation/Routes";
-import { movieImageUrlOriginal } from "../../../services/ApiService";
+import { movieImageUrl500 } from "../../../services/ApiService";
 import { colors, constants, typography } from "../../../themes";
 import { placeholderImage } from "../../../utils";
+import AppNoData from "../../components/AppNoData";
 import AppText from "../../components/AppText";
-import AppWishlistButton from "../../components/AppWishlistButton";
 import AppExpoIcons from "../../icons/AppExpoIcons";
 import AppIconButton from "../../icons/AppIconButton";
-import OneByOneCard from "./OneByOneCard";
 import AppActivityIndicator from "../../loaders/AppActivityIndicator";
-import AppNoData from "../../components/AppNoData";
+import UserPictureCard from "./UserPictureCard";
 
 interface Props {
   data: any[];
   title?: string;
+  searchSlug?: string;
 }
 
-const OneByOneSection: React.FC<Props> = ({ data, title = "Trending" }) => {
+const UserPictureSection: React.FC<Props> = ({
+  data,
+  title = "Cast",
+  searchSlug,
+}) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
+    if(!searchSlug) return ;
     navigation.navigate(ROUTES_NAMES.VIEW_ALL_LISTINGS, {
       id: title,
+      searchSlug: searchSlug ?? title,
     });
   };
-
-  const handleCardClick = (item: any) => {
-    let mediaType = item?.hasOwnProperty("first_air_date") ? "tv" : "movie";
+  const handleCardClick = (id: string) => {
     navigation.navigate(ROUTES_NAMES.DETAILS, {
-      id: item?.id,
-      mediaType: mediaType,
+      id: id,
     });
   };
 
@@ -39,57 +42,43 @@ const OneByOneSection: React.FC<Props> = ({ data, title = "Trending" }) => {
     <View style={[styles.container]}>
       <View style={[styles.infoBox]}>
         <AppText style={[styles.sectionTitle]}>{title}</AppText>
-        {data?.length > 1 ? (
-          <AppIconButton onPress={() => handleSeeALlBtn()}>
-            <AppExpoIcons
-              name={"chevron-right"}
-              size={20}
-              color={colors.dark300}
+        {
+          searchSlug ? (
+
+            <AppIconButton onPress={() => handleSeeALlBtn()}>
+          <AppExpoIcons
+            name={"chevron-right"}
+            size={20}
+            color={colors.dark300}
             />
-          </AppIconButton>
-        ) : null}
+        </AppIconButton>
+            
+          ) : null
+        }
       </View>
       {data?.length > 0 ? (
         <FlatList
           data={data}
-          ListEmptyComponent={<AppNoData/>}
           initialNumToRender={10}
           snapToStart={true}
           snapToAlignment={"center"}
+          ListEmptyComponent={<AppNoData />}
           renderItem={({ item, index }) => {
             return (
-              <OneByOneCard
+              <UserPictureCard
                 image={{
-                  uri:
-                    movieImageUrlOriginal(item?.backdrop_path) ??
-                    placeholderImage,
+                  uri: movieImageUrl500(item?.profile_path) ?? placeholderImage,
                 }}
-                onPress={() => handleCardClick(item)}
+                title={item?.name}
+                subTitle={item?.character}
+                onPress={() => handleCardClick(item?.id)}
                 style={[
                   index === 0 && { marginLeft: constants.paddingHorizontalApp },
                   index === data?.length - 1 && {
                     marginRight: constants.paddingHorizontalApp,
                   },
                 ]}
-                renderPremiumIcon={
-                  item?.vote_average > 7.5 ? (
-                    <AppIconButton
-                      style={[
-                        styles.premiumIconBtn,
-                        index === 0 && {
-                          marginLeft: constants.paddingHorizontalApp,
-                        },
-                      ]}
-                      onPress={() => console.log("")}
-                    >
-                      <AppExpoIcons
-                        name="crown-circle-outline"
-                        color={colors.warning}
-                        size={20}
-                      />
-                    </AppIconButton>
-                  ) : null
-                }
+               
               />
             );
           }}
@@ -103,15 +92,15 @@ const OneByOneSection: React.FC<Props> = ({ data, title = "Trending" }) => {
         />
       ) : (
         <AppActivityIndicator
-          style={[{ height: constants.windowHeight / 4.4 }]}
-          showText={false}
+          style={[{ height: constants.windowHeight / 6 }]}
+          showText={true}
         />
       )}
     </View>
   );
 };
 
-export default OneByOneSection;
+export default UserPictureSection;
 
 const styles = StyleSheet.create({
   container: {

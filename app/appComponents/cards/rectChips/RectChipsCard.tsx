@@ -1,5 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
-import React, { ReactNode } from "react";
+import React from "react";
 import {
   GestureResponderEvent,
   Image,
@@ -11,67 +10,64 @@ import {
   ViewStyle,
 } from "react-native";
 import { colors, constants } from "../../../themes";
-import { AppStyles } from "../../../themes/AppStyles";
 import AppFastImage from "../../components/AppFastImage";
-import { placeholderImage } from "../../../utils";
+import AppText from "../../components/AppText";
 
 interface Props {
   image: ImageSourcePropType;
-  isActive?: boolean;
+  title:string;
   onPress?: (event: GestureResponderEvent) => void;
   style?: StyleProp<ViewStyle>;
-  renderSaveIcon?: ReactNode;
-  renderPremiumIcon: ReactNode;
+
 }
 
-const TwoByFourCard: React.FC<Props> = ({
+const RectChipsCard: React.FC<Props> = ({
   image,
+  title,
   onPress,
-  isActive = false,
   style,
-  renderSaveIcon,
-  renderPremiumIcon,
 }) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <View style={[styles.container, isActive && styles.active, style]}>
-        <LinearGradient
-          colors={["rgba(0,0,0,0.4)", "transparent", "rgba(0,0,0,0.1)"]}
-          style={AppStyles.backgroundGradient}
-        />
-        <AppFastImage
+      <View style={[styles.container,style]}>
+      <AppFastImage
           source={
             image
           }
           style={styles.icon}
+          contentFit="fill"
         />
-       
+          {/* <AppText style={styles.title}>{title}</AppText> */}
       </View>
-      {renderSaveIcon}
-      {renderPremiumIcon}
     </TouchableOpacity>
   );
 };
 
-export default TwoByFourCard;
+export default RectChipsCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: constants.windowWidth / 2.6,
-    height: constants.windowHeight / 4.4,
-    borderRadius: 16,
-    backgroundColor: colors.light600,
+    width: constants.windowWidth / 5,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: colors.bgColor50,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
     position: "relative",
+    
+  
   },
   active: {
     backgroundColor: colors.bgColor300,
   },
   icon: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     resizeMode: "stretch",
   },
+  title:{
+    textAlign:"center",
+    fontSize:12,
+  }
 });

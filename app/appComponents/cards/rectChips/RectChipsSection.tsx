@@ -2,36 +2,37 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ROUTES_NAMES } from "../../../navigation/Routes";
-import { movieImageUrl500 } from "../../../services/ApiService";
+import { movieImageUrl185, movieImageUrl500 } from "../../../services/ApiService";
 import { colors, constants, typography } from "../../../themes";
 import { placeholderImage } from "../../../utils";
+import AppText from "../../components/AppText";
+import AppWishlistButton from "../../components/AppWishlistButton";
 import AppExpoIcons from "../../icons/AppExpoIcons";
 import AppIconButton from "../../icons/AppIconButton";
+import RectChipsCard from "./RectChipsCard";
 import AppActivityIndicator from "../../loaders/AppActivityIndicator";
-import ThreeByThreeCard from "./ThreeByThreeCard";
 import AppNoData from "../../components/AppNoData";
 
 interface Props {
   data: any[];
   title?: string;
-  isLoading?: boolean;
-  handleFetchMore: () => void;
-  handleRefresh: () => void;
+  searchSlug?: string;
 }
 
-const ThreeByThreeSection: React.FC<Props> = ({
+const RectChipsSection: React.FC<Props> = ({
   data,
   title = "Trending",
-  isLoading = false,
-  handleFetchMore,
-  handleRefresh,
+  searchSlug,
 }) => {
   const navigation = useNavigation<any>();
 
-  // const handleFetchMore = () => {
-  //   console.log("pageChanged")
-  // };
-
+  const handleSeeALlBtn = () => {
+    if(!searchSlug) return ;
+    navigation.navigate(ROUTES_NAMES.VIEW_ALL_LISTINGS, {
+      id: title,
+      searchSlug: searchSlug ?? title,
+    });
+  };
   const handleCardClick = (item: any) => {
     let mediaType = item?.hasOwnProperty("first_air_date") ? "tv" : "movie";
     navigation.navigate(ROUTES_NAMES.DETAILS, {
@@ -42,62 +43,58 @@ const ThreeByThreeSection: React.FC<Props> = ({
 
   return (
     <View style={[styles.container]}>
+      <View style={[styles.infoBox]}>
+        <AppText style={[styles.sectionTitle]}>{title}</AppText>
+        {
+          searchSlug ? (
+
+            <AppIconButton onPress={() => handleSeeALlBtn()}>
+          <AppExpoIcons
+            name={"chevron-right"}
+            size={20}
+            color={colors.dark300}
+            />
+        </AppIconButton>
+            
+          ) : null
+        }
+      </View>
       {data?.length > 0 ? (
         <FlatList
           data={data}
-          ListEmptyComponent={<AppNoData />}
           initialNumToRender={10}
           snapToStart={true}
           snapToAlignment={"center"}
-          numColumns={3}
-          columnWrapperStyle={{
-            justifyContent: "space-between",
-            paddingHorizontal: 16,
-          }}
+          ListEmptyComponent={<AppNoData />}
           renderItem={({ item, index }) => {
             return (
-              <ThreeByThreeCard
+              <RectChipsCard
                 image={{
-                  uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
+                  uri: movieImageUrl500(item?.logo_path) ?? placeholderImage,
                 }}
-                onPress={() => handleCardClick(item)}
-                renderPremiumIcon={
-                  item?.vote_average > 7.5 ? (
-                    <AppIconButton
-                      style={[
-                        styles.premiumIconBtn,
-                        index === 0 && {
-                          marginLeft: constants.paddingHorizontalApp,
-                        },
-                      ]}
-                      onPress={() => console.log("")}
-                    >
-                      <AppExpoIcons
-                        name="crown-circle-outline"
-                        color={colors.warning}
-                        size={20}
-                      />
-                    </AppIconButton>
-                  ) : null
-                }
+                title={item?.provider_name}
+                onPress={() => console.log()}
+                style={[
+                  index === 0 && { marginLeft: constants.paddingHorizontalApp },
+                  index === data?.length - 1 && {
+                    marginRight: constants.paddingHorizontalApp,
+                  },
+                ]}
+               
               />
             );
           }}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={() => (
-            <View style={{ backgroundColor: "transparent", height: 24 }} />
+            <View style={{ backgroundColor: "transparent", width: 16 }} />
           )}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          onEndReached={() => handleFetchMore()}
-          onEndReachedThreshold={0.1}
-          refreshing={isLoading}
-          onRefresh={() => handleRefresh()}
-          // horizontal
+         horizontal={true}
         />
       ) : (
         <AppActivityIndicator
-          style={[{ height: constants.windowHeight / 2 }]}
+          style={[{ height: constants.windowHeight / 6 }]}
           showText={true}
         />
       )}
@@ -105,19 +102,20 @@ const ThreeByThreeSection: React.FC<Props> = ({
   );
 };
 
-export default ThreeByThreeSection;
+export default RectChipsSection;
 
 const styles = StyleSheet.create({
   container: {
+    marginVertical: 8,
     gap: 8,
     position: "relative",
-    paddingVertical: 8,
   },
 
   infoBox: {
-    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: constants.paddingHorizontalApp,
   },
   sectionTitle: {
     fontSize: typography.text1REM,

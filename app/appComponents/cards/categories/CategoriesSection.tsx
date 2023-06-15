@@ -7,6 +7,7 @@ import {
   useCategoriesStore,
 } from "../../../store/slices/CategoriesSlice";
 import { useAppDispatch, useAppSelector } from "../../../store";
+import AppNoData from "../../components/AppNoData";
 
 interface Props {}
 
@@ -18,6 +19,7 @@ const CategoriesSection: React.FC<Props> = ({}) => {
     <View>
       <AppText>CategoriesSection</AppText>
       <FlatList
+      ListEmptyComponent={<AppNoData/>}
         data={availableCateories}
         renderItem={({ item, index }) => {
           return (

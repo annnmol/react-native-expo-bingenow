@@ -17,13 +17,14 @@ const HomeTabNavigator = () => {
       headerBackTitleStyle: false,
       gestureEnabled: true,
       presentation: 'card',
-      headerShown: false,
+      
+      // headerShown: false,
     }} initialRouteName={ROUTES_NAMES.HOMESCREEN}>
 
-    <Stack.Screen name={ROUTES_NAMES.HOMESCREEN} component={HomeScreen} />
-    <Stack.Screen name={ROUTES_NAMES.DETAILS} component={DetailsScreen} options={{presentation:'card',}}/>
+    <Stack.Screen name={ROUTES_NAMES.HOMESCREEN} component={HomeScreen} options={{presentation:'card', headerShown:false}}/>
+    <Stack.Screen name={ROUTES_NAMES.DETAILS} component={DetailsScreen} options={{presentation:'modal', headerShown:false}}/>
     <Stack.Screen name={ROUTES_NAMES.SEARCH} component={SearchScreen} options={{presentation:'modal', headerShown:false}}/>
-    <Stack.Screen name={ROUTES_NAMES.VIEW_ALL_LISTINGS} component={ViewAllListings} options={{presentation:'modal', headerShown:false}}/>
+    <Stack.Screen name={ROUTES_NAMES.VIEW_ALL_LISTINGS} component={ViewAllListings} options={{presentation:'card', headerShown:true}}/>
   </Stack.Navigator>
   )
 }

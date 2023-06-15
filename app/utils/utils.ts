@@ -17,3 +17,26 @@ export const getContrastTextColorHex = (hexcolor: string) => {
   return yiq >= 128 ? "#282828" : "#f1f1f1";
 };
 
+export const getVotedMovie = (data: any[]) => {
+  if (!data?.length) return;
+// let a= []
+ const a = data?.reduce((accumulator, current) => {
+    let temp =
+      accumulator?.vote_count > current?.vote_count ? accumulator : current;
+    return temp; 
+  });
+  // convereted to single array
+  return [a];
+};
+
+export const simplifyWatchProviders = (data: any) => {
+  let US_RENT: any = data?.US?.rent?.length > 0 ? data?.US?.rent : [];
+  let US_BUY: any = data?.US?.buy?.length > 0 ? data?.US?.buy : [];
+  let IN_RENT: any = data?.IN?.rent?.length > 0 ? data?.IN?.rent : [];
+  let IN_BUY: any = data?.IN?.buy?.length > 0 ? data?.IN?.buy : [];
+  const children = IN_BUY.concat(IN_RENT);
+
+  const unique:any[] = children.filter((v,i,a)=>a.findIndex(v2=>(v2?.provider_name===v?.provider_name))===i)
+  return unique?.slice(0,9);
+};
+

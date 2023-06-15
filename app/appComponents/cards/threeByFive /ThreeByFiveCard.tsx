@@ -12,13 +12,14 @@ import {
 } from "react-native";
 import { colors, constants } from "../../../themes";
 import { AppStyles } from "../../../themes/AppStyles";
+import AppFastImage from "../../components/AppFastImage";
 
 interface Props {
   image: ImageSourcePropType;
   isActive?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
   style?: StyleProp<ViewStyle>;
-  renderSaveIcon: ReactNode;
+  renderSaveIcon?: ReactNode;
   renderPremiumIcon: ReactNode;
 }
 
@@ -37,7 +38,12 @@ const ThreeByFiveCard: React.FC<Props> = ({
           colors={["rgba(0,0,0,0.4)", "transparent", "rgba(0,0,0,0.1)"]}
           style={AppStyles.backgroundGradient}
         />
-        <Image source={image} style={styles.icon} />
+         <AppFastImage
+          source={
+            image
+          }
+          style={styles.icon}
+        />
       </View>
       {renderSaveIcon}
       {renderPremiumIcon}
@@ -49,8 +55,6 @@ export default ThreeByFiveCard;
 
 const styles = StyleSheet.create({
   container: {
-    // width: constants.windowWidth / 2.6,
-    // height: constants.windowHeight / 4.4,
     width: constants.windowWidth / 3.8,
     height: constants.windowHeight / 6,
     borderRadius: 16,

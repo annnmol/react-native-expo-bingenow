@@ -1,40 +1,142 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
+import AppSlider from "../../appComponents/cards/slider/AppSlider";
 import TwoByFourSection from "../../appComponents/cards/twoByFour/TwoByFourSection";
-import AppSlider from "../../appComponents/components/AppSlider";
-import { ROUTES_NAMES } from "../../navigation/Routes";
-import { ApiNetworkService } from "../../services/ApiService";
+import { ApiNetworkService, Endpoints } from "../../services/ApiService";
 import { useFirebaseDBService } from "../../services/firebase";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { replaceSavedItem } from "../../store/slices/SavedItemsSlice";
 
 import { ScrollView } from "react-native-gesture-handler";
+import OneByOneSection from "../../appComponents/cards/oneByOne/OneByOneSection";
 import ThreeByFiveSection from "../../appComponents/cards/threeByFive /ThreeByFiveSection";
 import { constants } from "../../themes";
-import OneByOneSection from "../../appComponents/cards/oneByOne/OneByOneSection";
-import ThreeByThreeSection from "../../appComponents/cards/threeByThree/ThreeByThreeSection";
+import {
+  nowPlayingMoviesStore,
+  setData as setNowPlayingMovies,
+} from "../../store/slices/movies/NowPlayingMoviesSlice";
+import {
+  trendingAllStore,
+  setData as setTrendingMovies,
+} from "../../store/slices/movies/TrendingAllSlice";
+import {
+  topRatedStore,
+  setData as setTopRated,
+} from "../../store/slices/movies/TopRatedSlice";
+import {
+  freshTvStore,
+  setData as setFreshTv,
+} from "../../store/slices/movies/FreshTvSlice";
+import {
+  upcomingMoviesStore,
+  setData as setUpcomingMovies,
+} from "../../store/slices/movies/UpcomingMoviesSlice";
+import {
+  ultimateMoviesStore,
+  setData as setUltimateMovies,
+} from "../../store/slices/movies/UltimateMoviesSlice";
+import {
+  popularMoviesStore,
+  setData as setPopularMovies,
+} from "../../store/slices/movies/PopularMoviesSlice";
+import { getVotedMovie } from "../../utils/utils";
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const { getFirebase } = useFirebaseDBService();
   const dispatch = useAppDispatch();
+  const { data: nowPlayingMovies } = useAppSelector(nowPlayingMoviesStore);
+  const { data: trendingAll } = useAppSelector(trendingAllStore);
+  const { data: topRated } = useAppSelector(topRatedStore);
+  const { data: freshTv } = useAppSelector(freshTvStore);
+  const { data: upcomingMovies } = useAppSelector(upcomingMoviesStore);
+  const { data: ultimateMovies } = useAppSelector(ultimateMoviesStore);
+  const { data: popularMovies } = useAppSelector(popularMoviesStore);
 
-  const [data, setData] = React.useState<any[]>([]);
-  const getNowPlayingMovies = () => {
-    ApiNetworkService.getNowPlayingMovies()
+  const getNowPlayingMovies = (pageNumber: number = 1) => {
+    let endpoint: string = `${Endpoints.NOW_PLAYING_MOVIES}?region=IN&page=${pageNumber}&sort_by=revenue.desc`;
+    ApiNetworkService.getMovies(endpoint)
       .then((res) => {
-        // console.log("response", res?.data?.results);
-        setData(res?.data?.results);
-        console.log("first item", res?.data?.results?.[0]);
+        dispatch(setNowPlayingMovies(res?.data?.results));
       })
       .catch((err) => {
         console.warn("something went wrong", err);
       });
   };
+  const getTrendingAll = (pageNumber: number = 1) => {
+    let endpoint: string = `${Endpoints.TRENDING_ALL}?region=IN&page=${pageNumber}&sort_by=popularity.desc`;
+    ApiNetworkService.getMovies(endpoint)
+      .then((res) => {
+        dispatch(setTrendingMovies(res?.data?.results));
+      })
+      .catch((err) => {
+        console.warn("something went wrong", err);
+      });
+  };
+  const getPopularMovies = (pageNumber: number = 1) => {
+    let endpoint: string = `${Endpoints.POPULAR_MOVIES}?page=${pageNumber}&sort_by=popularity.desc`;
+    ApiNetworkService.getMovies(endpoint)
+      .then((res) => {
+        dispatch(setPopularMovies(res?.data?.results));
+      })
+      .catch((err) => {
+        console.warn("something went wrong", err);
+      });
+  };
+
+  const getTopRatedAll = (pageNumber: number = 1) => {
+    let endpoint: string = `${Endpoints.TOP_RATED_MOVIES}?region=IN&page=${pageNumber}&sort_by=popularity.desc`;
+    ApiNetworkService.getMovies(endpoint)
+      .then((res) => {
+        dispatch(setTopRated(res?.data?.results));
+      })
+      .catch((err) => {
+        console.warn("something went wrong", err);
+      });
+  };
+
+  const getFreshTv = (pageNumber: number = 1) => {
+    let endpoint: string = `${Endpoints.TRENDING_TV}?include_null_first_air_dates=false&region=IN&page=${pageNumber}&sort_by=popularity.desc`;
+    ApiNetworkService.getMovies(endpoint)
+      .then((res) => {
+        dispatch(setFreshTv(res?.data?.results));
+      })
+      .catch((err) => {
+        console.warn("something went wrong", err);
+      });
+  };
+  const getUpcomingMovies = (pageNumber: number = 1) => {
+    let endpoint: string = `${Endpoints.UPCOMING_MOVIES}?region=IN&page=${pageNumber}&sort_by=popularity.desc`;
+    ApiNetworkService.getMovies(endpoint)
+      .then((res) => {
+        dispatch(setUpcomingMovies(res?.data?.results));
+      })
+      .catch((err) => {
+        console.warn("something went wrong", err);
+      });
+  };
+
+  const getUltimateMovies = (pageNumber: number = 1) => {
+    let endpoint: string = `${Endpoints.DISCOVER_MOVIES}?page=${pageNumber}&sort_by=popularity.desc&vote_average.gte=8.4&vote_count.gte=10000`;
+    ApiNetworkService.getMovies(endpoint)
+      .then((res) => {
+        dispatch(setUltimateMovies(res?.data?.results));
+      })
+      .catch((err) => {
+        console.warn("something went wrong", err);
+      });
+  };
+
   useEffect(() => {
     getNowPlayingMovies();
     getSavedItems();
+    getTrendingAll();
+    getTopRatedAll();
+    getFreshTv();
+    getUpcomingMovies();
+    getUltimateMovies();
+    getPopularMovies();
   }, []);
 
   const getSavedItems = () => {
@@ -49,26 +151,41 @@ const HomeScreen = () => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <AppSlider
-        data={data}
-        onPress={(item: any) =>
-          navigation.navigate(ROUTES_NAMES.DETAILS, {
-            id: item?.id,
-          })
-        }
-        onPressSecondayBtn={(item: any) =>
-          console.log("onPressSecondayBtn", item)
-        }
-        ctaBtnText="Read more"
+      <AppSlider data={nowPlayingMovies} />
+      <TwoByFourSection
+        data={trendingAll}
+        title="Trending in India"
+        searchSlug={Endpoints.TRENDING_ALL}
       />
-      <TwoByFourSection data={data} title="Trending in India" />
-      <OneByOneSection data={data} title="Hot Right Now 🔥" />
-      <ThreeByFiveSection data={data} title="Top Picks"/>
-      <TwoByFourSection data={data} title="Top Rated Originals ✨"/>
-      <ThreeByFiveSection data={data} title="The Ultimate Line Up 🍿"/>
-      <TwoByFourSection data={data} title="Fresh TV Shows 📺"/>
-      <ThreeByFiveSection data={data} title="The Hollywood "/>
-      {/* <ThreeByThreeSection data={data} title="The Hollywood "/> */}
+      <ThreeByFiveSection
+        data={popularMovies}
+        title="Top Picks"
+        searchSlug={Endpoints.POPULAR_MOVIES}
+      />
+      <ThreeByFiveSection
+        data={topRated}
+        title="Top Rated Originals ✨"
+        searchSlug={Endpoints.TOP_RATED_MOVIES}
+      />
+      <OneByOneSection
+        data={getVotedMovie(trendingAll)}
+        title="Hot Right Now 🔥"
+      />
+      <TwoByFourSection
+        data={freshTv}
+        title="Fresh TV Shows 📺"
+        searchSlug={Endpoints.TRENDING_TV}
+      />
+      <ThreeByFiveSection
+        data={ultimateMovies}
+        title="The Ultimate Hollywood 🍿"
+        searchSlug={Endpoints.DISCOVER_MOVIES}
+      />
+      <ThreeByFiveSection
+        data={upcomingMovies}
+        title="Upcoming"
+        searchSlug={Endpoints.UPCOMING_MOVIES}
+      />
     </ScrollView>
   );
 };
@@ -81,12 +198,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     flex: 1,
     backgroundColor: constants.appBackgroundColor,
-    // backgroundColor: "red",
     width: constants.windowWidth,
     height: constants.windowHeight,
-    gap:12,
-    // paddingHorizontal: constants.paddingHorizontalApp,
-    // paddingVertical: constants.paddingVerticalApp,
+    gap: 12,
     overflow: "hidden",
   },
 });

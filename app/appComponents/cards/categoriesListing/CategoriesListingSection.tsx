@@ -7,6 +7,7 @@ import {
 } from "../../../store/slices/CategoriesSlice";
 import AppText from "../../components/AppText";
 import CategoryListingCard from "./CategoryListingCard";
+import AppNoData from "../../components/AppNoData";
 
 interface Props {}
 
@@ -19,6 +20,7 @@ const CategoriesListingSection: React.FC<Props> = ({}) => {
       <AppText>CategoriesListingSection</AppText>
       <FlatList
         data={availableCateories}
+        ListEmptyComponent={<AppNoData/>}
         renderItem={({ item, index }) => {
           return (
             <CategoryListingCard

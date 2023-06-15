@@ -1,6 +1,14 @@
 import { Image, ImageContentFit, ImageSource, ImageStyle } from "expo-image";
 import React from "react";
 
+import {
+  Fade,
+  Placeholder,
+  PlaceholderMedia,
+  Shine,
+  ShineOverlay,
+} from "rn-placeholder";
+import AppActivityIndicator from "../loaders/AppActivityIndicator";
 interface Props {
   style?: ImageStyle | ImageStyle[];
   source: string | number | ImageSource | ImageSource[] | string[];
@@ -11,9 +19,9 @@ interface Props {
 }
 
 const AppFastImage: React.FC<Props> = ({
-  style = { width: '100%', height: 200, borderRadius:4 },
+  style = { width: "100%", height: 200, borderRadius: 4 },
   source,
-  contentFit,
+  contentFit='cover',
   children,
   ...otherProps
 }) => {
@@ -21,11 +29,10 @@ const AppFastImage: React.FC<Props> = ({
     <Image
       style={style}
       source={source ? source : require("../../assets/images/blurHash.png")}
-      placeholder={require("../../assets/images/blurHash.png")}
       placeholderContentFit="fill"
-      contentFit="cover"
+      contentFit={contentFit}
       transition={800}
-      // cachePolicy="none"
+      cachePolicy="memory-disk"
       {...otherProps}
     />
   );

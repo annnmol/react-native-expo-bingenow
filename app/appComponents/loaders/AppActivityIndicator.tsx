@@ -4,13 +4,14 @@ import {
   StyleProp,
   StyleSheet,
   View,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 import { colors } from "../../themes";
 import AppText from "../components/AppText";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
+  showText?: boolean;
 }
 
 const funnyTexts = [
@@ -34,7 +35,7 @@ const shuffleArray = (array: any[]) => {
   }
   return newArray;
 };
-const AppActivityIndicator: React.FC<Props> = ({ style }) => {
+const AppActivityIndicator: React.FC<Props> = ({ style, showText = true }) => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   useEffect(() => {
@@ -53,10 +54,12 @@ const AppActivityIndicator: React.FC<Props> = ({ style }) => {
 
   return (
     <View style={[styles.container, style && style]}>
-      <ActivityIndicator size="large" color={colors.dark400} />
-      <AppText style={[styles.funnyText]}>
-        {shuffledTexts[currentTextIndex]}
-      </AppText>
+      <ActivityIndicator size="large" color={colors.dark600} />
+      {showText ? (
+        <AppText style={[styles.funnyText]}>
+          {shuffledTexts[currentTextIndex]}
+        </AppText>
+      ) : null}
     </View>
   );
 };
@@ -65,11 +68,12 @@ export default AppActivityIndicator;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    zIndex:1,
+    zIndex: 1,
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
+    // backgroundColor: "#ece2e2",
+    backgroundColor: "transparent",
   },
 
   funnyText: {
@@ -77,6 +81,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
     letterSpacing: 0.5,
-    color: colors.dark400,
+    color: colors.dark600,
   },
 });

@@ -10,24 +10,30 @@ import AppWishlistButton from "../../components/AppWishlistButton";
 import AppExpoIcons from "../../icons/AppExpoIcons";
 import AppIconButton from "../../icons/AppIconButton";
 import TwoByFourCard from "./TwoByFourCard";
+import AppActivityIndicator from "../../loaders/AppActivityIndicator";
+import AppNoData from "../../components/AppNoData";
 
 interface Props {
   data: any[];
   title?: string;
+  searchSlug?: string;
 }
 
-const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
+const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending", searchSlug }) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
-    navigation.navigate(ROUTES_NAMES.DETAILS, {
+    navigation.navigate(ROUTES_NAMES.VIEW_ALL_LISTINGS, {
       id: title,
+      searchSlug:searchSlug ?? title
     });
   };
 
-  const handleCardClick = (id: string) => {
+  const handleCardClick = (item: any) => {
+    let mediaType = item?.hasOwnProperty("first_air_date") ? "tv" : "movie";
     navigation.navigate(ROUTES_NAMES.DETAILS, {
-      id: id,
+      id: item?.id,
+      mediaType: mediaType,
     });
   };
 
@@ -43,64 +49,59 @@ const TwoByFourSection: React.FC<Props> = ({ data, title = "Trending" }) => {
           />
         </AppIconButton>
       </View>
-      <FlatList
-        data={data}
-        snapToStart={true}
-        snapToAlignment={"center"}
-        renderItem={({ item, index }) => {
-          return (
-            <TwoByFourCard
-              image={{
-                uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
-              }}
-              onPress={() => handleCardClick(item?.id)}
-              style={[
-                index === 0 && { marginLeft: constants.paddingHorizontalApp },
-                index === data?.length - 1 && {
-                  marginRight: constants.paddingHorizontalApp,
-                },
-              ]}
-              renderSaveIcon={
-                <AppWishlistButton
-                  item={item}
-                  style={[
-                    { position: "absolute", right: 0, top: 0 },
-                    index === data?.length - 1 && {
-                      marginRight: constants.paddingHorizontalApp,
-                    },
-                  ]}
-                />
-              }
-              renderPremiumIcon={
-                item?.vote_average > 7.5 ? (
-                  <AppIconButton
-                    style={[
-                      styles.premiumIconBtn,
-                      index === 0 && {
-                        marginLeft: constants.paddingHorizontalApp,
-                      },
-                    ]}
-                    onPress={() => console.log("")}
-                  >
-                    <AppExpoIcons
-                      name="crown-circle-outline"
-                      color={colors.warning}
-                      size={20}
-                    />
-                  </AppIconButton>
-                ) : null
-              }
-            />
-          );
-        }}
-        keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => (
-          <View style={{ backgroundColor: "transparent", width: 16 }} />
-        )}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-      />
+      {data?.length > 0 ? (
+        <FlatList
+          data={data}
+          ListEmptyComponent={<AppNoData/>}
+          initialNumToRender={10}
+          snapToStart={true}
+          snapToAlignment={"center"}
+          renderItem={({ item, index }) => {
+            return (
+              <TwoByFourCard
+                image={{
+                  uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
+                }}
+                onPress={() => handleCardClick(item)}
+                style={[
+                  index === 0 && { marginLeft: constants.paddingHorizontalApp },
+                  index === data?.length - 1 && {
+                    marginRight: constants.paddingHorizontalApp,
+                  },
+                ]}
+                renderPremiumIcon={
+                  item?.vote_average > 7.5 ? (
+                    <AppIconButton
+                      style={[
+                        styles.premiumIconBtn,
+                        index === 0 && {
+                          marginLeft: constants.paddingHorizontalApp,
+                        },
+                      ]}
+                      onPress={() => console.log("")}
+                    >
+                      <AppExpoIcons
+                        name="crown-circle-outline"
+                        color={colors.warning}
+                        size={20}
+                      />
+                    </AppIconButton>
+                  ) : null
+                }
+              />
+            );
+          }}
+          keyExtractor={(item, index) => index.toString()}
+          ItemSeparatorComponent={() => (
+            <View style={{ backgroundColor: "transparent", width: 16 }} />
+          )}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+        />
+      ) : (
+        <AppActivityIndicator style={[{height:constants.windowHeight / 4.4}]} showText={true} />
+      )}
     </View>
   );
 };

@@ -10,23 +10,34 @@ import AppWishlistButton from "../../components/AppWishlistButton";
 import AppExpoIcons from "../../icons/AppExpoIcons";
 import AppIconButton from "../../icons/AppIconButton";
 import ThreeByFiveCard from "./ThreeByFiveCard";
+import AppActivityIndicator from "../../loaders/AppActivityIndicator";
+import AppNoData from "../../components/AppNoData";
 
 interface Props {
   data: any[];
   title?: string;
+  searchSlug?: string;
 }
 
-const ThreeByFiveSection: React.FC<Props> = ({ data, title = "Trending" }) => {
+const ThreeByFiveSection: React.FC<Props> = ({
+  data,
+  title = "Trending",
+  searchSlug,
+}) => {
   const navigation = useNavigation<any>();
 
   const handleSeeALlBtn = () => {
-    navigation.navigate(ROUTES_NAMES.DETAILS, {
+    if(!searchSlug) return ;
+    navigation.navigate(ROUTES_NAMES.VIEW_ALL_LISTINGS, {
       id: title,
+      searchSlug: searchSlug ?? title,
     });
   };
-  const handleCardClick = (id: string) => {
+  const handleCardClick = (item: any) => {
+    let mediaType = item?.hasOwnProperty("first_air_date") ? "tv" : "movie";
     navigation.navigate(ROUTES_NAMES.DETAILS, {
-      id: id,
+      id: item?.id,
+      mediaType: mediaType,
     });
   };
 
@@ -34,72 +45,76 @@ const ThreeByFiveSection: React.FC<Props> = ({ data, title = "Trending" }) => {
     <View style={[styles.container]}>
       <View style={[styles.infoBox]}>
         <AppText style={[styles.sectionTitle]}>{title}</AppText>
-        <AppIconButton onPress={() => handleSeeALlBtn()}>
+        {
+          searchSlug ? (
+
+            <AppIconButton onPress={() => handleSeeALlBtn()}>
           <AppExpoIcons
             name={"chevron-right"}
             size={20}
             color={colors.dark300}
-          />
-        </AppIconButton>
-      </View>
-      <FlatList
-        data={data}
-        snapToStart={true}
-        snapToAlignment={"center"}
-        renderItem={({ item, index }) => {
-          return (
-            <ThreeByFiveCard
-              image={{
-                uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
-              }}
-              onPress={() => handleCardClick(item?.id)}
-              style={[
-                index === 0 && { marginLeft: constants.paddingHorizontalApp },
-                index === data?.length - 1 && {
-                  marginRight: constants.paddingHorizontalApp,
-                },
-              ]}
-              renderSaveIcon={
-                <AppWishlistButton
-                  item={item}
-                  style={[
-                    { position: "absolute", right: 0, top: 0 },
-                    index === data?.length - 1 && {
-                      marginRight: constants.paddingHorizontalApp,
-                    },
-                  ]}
-                />
-              }
-              renderPremiumIcon={
-                item?.vote_average > 7.5 ? (
-                  <AppIconButton
-                    style={[
-                      styles.premiumIconBtn,
-                      index === 0 && {
-                        marginLeft: constants.paddingHorizontalApp,
-                      },
-                    ]}
-                    onPress={() => console.log("")}
-                  >
-                    <AppExpoIcons
-                      name="crown-circle-outline"
-                      color={colors.warning}
-                      size={20}
-                    />
-                  </AppIconButton>
-                ) : null
-              }
             />
-          );
-        }}
-        keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => (
-          <View style={{ backgroundColor: "transparent", width: 16 }} />
-        )}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-      />
+        </AppIconButton>
+            
+          ) : null
+        }
+      </View>
+      {data?.length > 0 ? (
+        <FlatList
+          data={data}
+          initialNumToRender={10}
+          snapToStart={true}
+          snapToAlignment={"center"}
+          ListEmptyComponent={<AppNoData />}
+          renderItem={({ item, index }) => {
+            return (
+              <ThreeByFiveCard
+                image={{
+                  uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
+                }}
+                onPress={() => handleCardClick(item)}
+                style={[
+                  index === 0 && { marginLeft: constants.paddingHorizontalApp },
+                  index === data?.length - 1 && {
+                    marginRight: constants.paddingHorizontalApp,
+                  },
+                ]}
+                renderPremiumIcon={
+                  item?.vote_average > 7.5 ? (
+                    <AppIconButton
+                      style={[
+                        styles.premiumIconBtn,
+                        index === 0 && {
+                          marginLeft: constants.paddingHorizontalApp,
+                        },
+                      ]}
+                      onPress={() => console.log("")}
+                    >
+                      <AppExpoIcons
+                        name="crown-circle-outline"
+                        color={colors.warning}
+                        size={20}
+                      />
+                    </AppIconButton>
+                  ) : null
+                }
+              />
+            );
+          }}
+          keyExtractor={(item, index) => index.toString()}
+          ItemSeparatorComponent={() => (
+            <View style={{ backgroundColor: "transparent", width: 16 }} />
+          )}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+        />
+      ) : (
+        <AppActivityIndicator
+          style={[{ height: constants.windowHeight / 6 }]}
+          showText={true}
+        />
+      )}
     </View>
   );
 };
