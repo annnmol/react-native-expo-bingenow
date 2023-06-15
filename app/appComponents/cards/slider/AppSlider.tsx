@@ -26,9 +26,11 @@ const AppSlider: React.FC<Props> = ({ data, showPagination = true }) => {
     });
   };
 
-  const handleCardClick = (id: string) => {
+  const handleCardClick = (item: any) => {
+    let mediaType = item?.hasOwnProperty("first_air_date") ? "tv" : "movie";
     navigation.navigate(ROUTES_NAMES.DETAILS, {
-      id: id,
+      id: item?.id,
+      mediaType: mediaType,
     });
   };
 
@@ -52,7 +54,7 @@ const AppSlider: React.FC<Props> = ({ data, showPagination = true }) => {
           renderItem={({ item, index }) => {
             return (
               <SliderCard
-                onPress={() => handleCardClick(item?.id)}
+                onPress={() => handleCardClick(item)}
                 ctaBtnText={"Watch Now"}
                 item={item}
                 key={index}
