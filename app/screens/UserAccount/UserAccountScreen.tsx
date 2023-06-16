@@ -13,6 +13,7 @@ import {
 } from "../../services/firebase";
 import { useAppSelector } from "../../store";
 import { authUserStore } from "../../store/slices/AuthUserSlice";
+import UserPictureCard from "../../appComponents/cards/userPicture/UserPictureCard";
 
 
 
@@ -47,14 +48,18 @@ const UserAccountScreen = () => {
     // <ScrollView>
       <AppSafeViewScreen>
         <AppText>UserAccount Hello {authUser?.email}</AppText>
-        <AppIconButton onPress={() => handleLogout()}>
-          <AppExpoIcons name="logout" />
-        </AppIconButton>
-        <AppFastImage source={"https://source.unsplash.com/random/?city"} />
+       
+        {/* <AppFastImage source={"https://source.unsplash.com/random/?city"} />
 
         <AppButton variant="text" onPress={() => handleProfileUpdate()}>
           Update profile name
-        </AppButton>
+        </AppButton> */}
+
+        <UserPictureCard image={{uri:'https://source.unsplash.com/random/?profile'}} title={authUser.displayName} subTitle={authUser.email}/>
+
+        <AppIconButton onPress={() => handleLogout()}>
+          <AppExpoIcons name="logout" size={30} />
+        </AppIconButton>
       </AppSafeViewScreen>
     // </ScrollView>  
   );
@@ -72,6 +77,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
     shadowRadius: 0,
     elevation: 0.2,
+    
   },
   thumbnail: {
     width: "100%",

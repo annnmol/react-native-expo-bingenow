@@ -1,10 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "../screens/Home/HomeScreen";
-import { ROUTES_NAMES } from "./Routes";
-import SearchScreen from "../screens/Search/SearchScreen";
+import ViewAllListings from "../screens/Details/ViewAllListings";
 import DetailsScreen from "../screens/Details/[id]";
-import ViewAllListings from "../screens/ViewAllListings/ViewAllListings";
+import CastDetailsScreen from "../screens/Details/cast[id]";
+import HomeScreen from "../screens/Home/HomeScreen";
+import SearchScreen from "../screens/Search/SearchScreen";
+import { ROUTES_NAMES } from "./Routes";
+
 
 const Stack = createStackNavigator();
 
@@ -25,6 +27,7 @@ const HomeTabNavigator = () => {
     <Stack.Screen name={ROUTES_NAMES.DETAILS} component={DetailsScreen} options={{presentation:'modal', headerShown:false}}/>
     <Stack.Screen name={ROUTES_NAMES.SEARCH} component={SearchScreen} options={{presentation:'modal', headerShown:false}}/>
     <Stack.Screen name={ROUTES_NAMES.VIEW_ALL_LISTINGS} component={ViewAllListings} options={{presentation:'card', headerShown:true}}/>
+    <Stack.Screen name={ROUTES_NAMES.CAST_DETAILS} component={CastDetailsScreen} options={{presentation:'modal', headerShown:false}}/>
   </Stack.Navigator>
   )
 }

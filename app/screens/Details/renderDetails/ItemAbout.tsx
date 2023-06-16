@@ -11,7 +11,7 @@ interface Props {
 const ItemAbout: React.FC<Props> = ({ about, title = "Summary" }) => {
   return (
     <View style={styles.container}>
-      <AppText style={styles.title}>{title}:</AppText>
+      <AppText style={styles.title}>{title}</AppText>
       <AppText style={styles.captionText}>{about}</AppText>
     </View>
   );

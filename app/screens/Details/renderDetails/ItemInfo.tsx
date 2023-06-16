@@ -48,25 +48,39 @@ const ItemInfo: React.FC<Props> = ({
         </View>
       </View>
       <View style={styles.infoBox}>
-        
-        <AppText style={styles.captionText} numberOfLines={2}>
-          {caption1}
-        </AppText>
-        <AppText style={styles.captionText} numberOfLines={2}>
-          {caption2}
-        </AppText>
-        <AppText style={styles.captionText} numberOfLines={2}>
-          {caption3}
-        </AppText>
-        <AppText style={styles.captionText} numberOfLines={2}>
-          {caption4}
-        </AppText>
-        <AppText style={styles.captionText} numberOfLines={2}>
-          {caption5}
-        </AppText>
-        <AppText style={styles.captionText} numberOfLines={2}>
-          {caption6}
-        </AppText>
+        {caption1 && (
+          <AppText style={styles.captionText} numberOfLines={2}>
+            {caption1}
+          </AppText>
+        )}
+        {caption2 && (
+          <AppText style={styles.captionText} numberOfLines={2}>
+            {caption2}
+          </AppText>
+        )}
+        {caption3 && (
+          <AppText style={styles.captionText} numberOfLines={2}>
+            {caption3}
+          </AppText>
+        )}
+        {caption4 && (
+          <AppText style={styles.captionText} numberOfLines={2}>
+            {caption4}
+          </AppText>
+        )}
+
+        {caption5 && (
+          <AppText style={styles.captionText} numberOfLines={2}>
+            {" "}
+            {caption5}
+          </AppText>
+        )}
+
+        {caption6 && (
+          <AppText style={styles.captionText} numberOfLines={2}>
+            {caption6}
+          </AppText>
+        )}
       </View>
     </View>
   );

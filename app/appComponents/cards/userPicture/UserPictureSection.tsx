@@ -33,7 +33,7 @@ const UserPictureSection: React.FC<Props> = ({
     });
   };
   const handleCardClick = (id: string) => {
-    navigation.navigate(ROUTES_NAMES.DETAILS, {
+    navigation.navigate(ROUTES_NAMES.CAST_DETAILS, {
       id: id,
     });
   };

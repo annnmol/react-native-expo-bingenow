@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { RefreshControl, StyleSheet } from "react-native";
 import AppSlider from "../../appComponents/cards/slider/AppSlider";
 import TwoByFourSection from "../../appComponents/cards/twoByFour/TwoByFourSection";
 import { ApiNetworkService, Endpoints } from "../../services/ApiService";
@@ -50,6 +50,14 @@ import {
 import { getVotedMovie } from "../../utils/utils";
 
 const HomeScreen = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
   const navigation = useNavigation<any>();
   const { getFirebase } = useFirebaseDBService();
   const dispatch = useAppDispatch();
@@ -113,7 +121,6 @@ const HomeScreen = () => {
       });
   };
 
-  
   const getTopRatedAll = (pageNumber: number = 1) => {
     dispatch(setFreshTvLoading(true));
     let endpoint: string = `${Endpoints.TOP_RATED_MOVIES}?region=IN&page=${pageNumber}&sort_by=popularity.desc`;
@@ -183,7 +190,7 @@ const HomeScreen = () => {
     getUpcomingMovies();
     getUltimateMovies();
     getPopularMovies();
-  }, []);
+  }, [refreshing]);
 
   const getSavedItems = () => {
     getFirebase(`savedMovies`)
@@ -196,7 +203,13 @@ const HomeScreen = () => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <AppSlider data={nowPlayingMovies} isLoading={nowPlayingMoviesLoading} />
       <TwoByFourSection
         data={trendingAll}
