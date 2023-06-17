@@ -26,6 +26,7 @@ export class Endpoints {
   static TOP_RATED_MOVIES = "movie/top_rated";
   static UPCOMING_MOVIES = "movie/upcoming";
   static TRENDING_TV = "trending/tv/day";
+  static SEARCH_All = "search/multi";
 }
 
 // functions to get images of different widths, (show images using these to improve the loading times)

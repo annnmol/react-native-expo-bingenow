@@ -28,6 +28,7 @@ export const StyledForms = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     gap: 4,
+    position: "relative",
   },
 
   inputField: {

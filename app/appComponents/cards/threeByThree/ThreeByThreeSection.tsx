@@ -10,6 +10,7 @@ import AppIconButton from "../../icons/AppIconButton";
 import AppActivityIndicator from "../../loaders/AppActivityIndicator";
 import ThreeByThreeCard from "./ThreeByThreeCard";
 import AppNoData from "../../components/AppNoData";
+import { checkImageURL } from "../../../utils/utils";
 
 interface Props {
   data: any[];
@@ -43,7 +44,7 @@ const ThreeByThreeSection: React.FC<Props> = ({
   // return null;
   return (
     <View style={[styles.container]}>
-      {data?.length > 0 ? (
+      {!isLoading ? (
         <FlatList
           data={data}
           ListEmptyComponent={<AppNoData />}
@@ -56,10 +57,15 @@ const ThreeByThreeSection: React.FC<Props> = ({
             paddingHorizontal: 16,
           }}
           renderItem={({ item, index }) => {
+            const imageURl = movieImageUrl500(item?.poster_path);
+            const IsValidImageURl = checkImageURL(imageURl);
+
+            // if(!imageURl || !IsValidImageURl) return null;
+
             return (
               <ThreeByThreeCard
                 image={{
-                  uri: movieImageUrl500(item?.poster_path) ?? placeholderImage,
+                  uri: imageURl ?? placeholderImage,
                 }}
                 onPress={() => handleCardClick(item)}
                 renderPremiumIcon={
@@ -113,6 +119,7 @@ const styles = StyleSheet.create({
     gap: 8,
     position: "relative",
     paddingVertical: 8,
+    width: constants.windowWidth,
   },
 
   infoBox: {

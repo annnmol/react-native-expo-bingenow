@@ -1,4 +1,3 @@
-
 export const getContrastTextColorHex = (hexcolor: string) => {
   // If a leading # is provided, remove it
   if (hexcolor.slice(0, 1) === "#") {
@@ -19,11 +18,11 @@ export const getContrastTextColorHex = (hexcolor: string) => {
 
 export const getVotedMovie = (data: any[]) => {
   if (!data?.length) return;
-// let a= []
- const a = data?.reduce((accumulator, current) => {
+  // let a= []
+  const a = data?.reduce((accumulator, current) => {
     let temp =
       accumulator?.vote_count > current?.vote_count ? accumulator : current;
-    return temp; 
+    return temp;
   });
   // convereted to single array
   return [a];
@@ -36,7 +35,29 @@ export const simplifyWatchProviders = (data: any) => {
   let IN_BUY: any = data?.IN?.buy?.length > 0 ? data?.IN?.buy : [];
   const children = IN_BUY.concat(IN_RENT);
 
-  const unique:any[] = children.filter((v,i,a)=>a.findIndex(v2=>(v2?.provider_name===v?.provider_name))===i)
-  return unique?.slice(0,9);
+  const unique: any[] = children.filter(
+    (v, i, a) =>
+      a.findIndex((v2) => v2?.provider_name === v?.provider_name) === i
+  );
+  return unique?.slice(0, 9);
 };
-
+export const objToQueryString = (obj: any) => {
+  const keyValuePairs = [];
+  for (const key in obj) {
+    keyValuePairs?.push(
+      // encodeURIComponent(key) + "=" + decodeURI(obj?.[key])?.replace(/ /g, "+")
+      encodeURIComponent(key) + "=" + decodeURI(obj?.[key])?.replace(/ /g, "%20")
+    );
+  }
+  return keyValuePairs.join("&");
+};
+export const checkImageURL = (url: string | null) => {
+  if (!url) return false;
+  else {
+    const pattern = new RegExp(
+      "^https?:\\/\\/.+\\.(png|jpg|jpeg|bmp|gif|webp)$",
+      "i"
+    );
+    return pattern.test(url);
+  }
+};

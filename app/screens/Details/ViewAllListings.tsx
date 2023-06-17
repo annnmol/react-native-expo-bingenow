@@ -18,7 +18,9 @@ const ViewAllListings = ({ route }) => {
   const [isDataLoading, setIsDataLoading] = React.useState<boolean>(false);
   const getMoreData = (pageNumber: number = 1) => {
     let endpoint: string = `${searchSlug}?page=${pageNumber}&sort_by=popularity.desc`;
-    setIsDataLoading(true);
+    if(pageNumber === 1){
+      setIsDataLoading(true);
+    }
     ApiNetworkService.getMovies(endpoint)
       .then((res) => {
         if (data.length > 0 && res?.data?.results?.length > 0) {
