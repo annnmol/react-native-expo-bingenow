@@ -10,7 +10,7 @@ import { replaceSavedItem } from "../../store/slices/SavedItemsSlice";
 
 import { ScrollView } from "react-native-gesture-handler";
 import OneByOneSection from "../../appComponents/cards/oneByOne/OneByOneSection";
-import ThreeByFiveSection from "../../appComponents/cards/threeByFive /ThreeByFiveSection";
+import ThreeByFiveSection from "../../appComponents/cards/threeByFive/ThreeByFiveSection";
 import { constants } from "../../themes";
 import {
   nowPlayingMoviesStore,

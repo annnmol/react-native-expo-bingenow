@@ -10,7 +10,7 @@ import AppActivityIndicator from "../../appComponents/loaders/AppActivityIndicat
 import { colors, constants } from "../../themes";
 import ItemInfo from "./renderDetails/ItemInfo";
 import ItemAbout from "./renderDetails/ItemAbout";
-import ThreeByFiveSection from "../../appComponents/cards/threeByFive /ThreeByFiveSection";
+import ThreeByFiveSection from "../../appComponents/cards/threeByFive/ThreeByFiveSection";
 import UserPictureSection from "../../appComponents/cards/userPicture/UserPictureSection";
 import { simplifyWatchProviders } from "../../utils/utils";
 import RectChipsSection from "../../appComponents/cards/rectChips/RectChipsSection";
